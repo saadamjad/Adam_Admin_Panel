@@ -30,6 +30,7 @@ import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
 import { AddProduct } from "Store/actions/userAuth";
 import { EditProduct } from "Store/actions/userAuth";
 import { AddStore } from "Store/actions/userAuth";
+import { AddStoreImage } from "Store/actions/userAuth";
 
 class Map extends React.Component {
   constructor(props) {
@@ -121,7 +122,7 @@ class Map extends React.Component {
                           <div key={key} style={{ width: 150, height: 120 }}>
                             <img
                               style={{ width: "100%", height: "100%" }}
-                              src={val.path}
+                              src={val}
                             />
                           </div>
                         );
@@ -187,11 +188,13 @@ class Map extends React.Component {
                         let reader = new FileReader();
                         let allImages = this.state.allImages;
                         reader.onload = e => {
-                          allImages.push({ path: e.target.result });
+                          allImages.push(e.target.result);
                           this.setState({ allImages });
-                          console.log("Running", allImages);
+                          // console.log("Running", allImages);
                         };
+                        console.log("hello", this.state.allImages);
                         reader.readAsDataURL(e.target.files[0]);
+                        // console.log("for testing ", e.target.files[0]);
                       }}
                     />
 
@@ -199,7 +202,9 @@ class Map extends React.Component {
                       <button
                         type="button"
                         class="btn btn-info"
-                        onClick={() => this.addProduct()}
+                        onClick={
+                          (() => this.addProduct(), console.log("All image"))
+                        }
                       >
                         Add
                       </button>
@@ -225,7 +230,8 @@ class Map extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
   addProduct: (obj, history) => dispatch(AddStore(obj, history)),
-  editProduct: (obj, history) => dispatch(EditProduct(obj, history))
+  editProduct: (obj, history) => dispatch(EditProduct(obj, history)),
+  StoreImages: (obj, history) => dispatch(AddStoreImage(obj, history))
 });
 
 export default connect(null, mapDispatchToProps)(Map);

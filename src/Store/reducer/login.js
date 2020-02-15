@@ -9,7 +9,8 @@ const initialState = {
   store: [],
   Adamproducts: [],
   images: [],
-  getProductCategory: []
+  getProductCategory: [],
+  StoreImage: []
 };
 
 export default (state = initialState, action) => {
@@ -49,6 +50,10 @@ export default (state = initialState, action) => {
 
     case ActionType.GET_PRODUCTS_CATEGORY:
       return { ...state, getProductCategory: action.payload };
+
+    case ActionType.STORE_IMAGE:
+      return { ...state, StoreImage: action.payload };
+
     default:
       return { ...state };
   }

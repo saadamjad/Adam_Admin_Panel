@@ -113,8 +113,8 @@ class Map extends React.Component {
       category,
       Quantity,
       price,
-      product_Details,
-      product_type,
+      description,
+      type,
       storeId,
       discount,
       TagsColour,
@@ -128,8 +128,8 @@ class Map extends React.Component {
       category !== "" &&
       Quantity !== "" &&
       price !== "" &&
-      product_Details !== "" &&
-      product_type !== "" &&
+      description !== "" &&
+      type !== "" &&
       discount !== "" &&
       TagsColour !== "" &&
       TagsType !== "" &&
@@ -144,14 +144,14 @@ class Map extends React.Component {
         category,
         Quantity,
         price,
-        product_Details,
-        product_type,
+        description,
+        type,
         discount,
         storeId,
         tags: [Tagscategory, TagsType, TagsColour],
         images: this.props.images
       };
-      this.props.AddProductAdam(data, this.state.store, this.props.history);
+      this.props.AddProductAdam(data, this.props.history);
       //   this.setState({
       //     productName: "",
       //     location: "",
@@ -503,186 +503,6 @@ class Map extends React.Component {
                         id="formGroupExampleInput"
                         placeholder="Product Type"
                       />
-                    </div>
-
-                    <div style={{ display: "flex" }}>
-                      {/* <div className="dropdown">
-                        <label for="formGroupExampleInput">
-                         
-                        </label>{" "}
-                        <button
-                          className="btn btn-secondary dropdown-toggle"
-                          type="button"
-                          id="dropdownMenuButton0"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          {this.state.Tagscategory}
-                        </button>
-                        <div
-                          className="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton0"
-                        >
-                          <a
-                            onClick={() =>
-                              this.setState({ Tagscategory: "winter" })
-                            }
-                            className="dropdown-item"
-                          >
-                            {" "}
-                            Winter{" "}
-                          </a>
-
-                          <a
-                            onClick={() =>
-                              this.setState({ Tagscategory: "summer" })
-                            }
-                            className="dropdown-item"
-                          >
-                            {" "}
-                            summer{" "}
-                          </a>
-                          <a
-                            onClick={() =>
-                              this.setState({ Tagscategory: "cristmas" })
-                            }
-                            className="dropdown-item"
-                          >
-                            {" "}
-                            Cristmas{" "}
-                          </a>
-                          <a
-                            onClick={() =>
-                              this.setState({ Tagscategory: "others" })
-                            }
-                            className="dropdown-item"
-                          >
-                            {" "}
-                            others{" "}
-                          </a>
-                        </div>
-                      </div>
-
-                      <div className="form-group" style={{ marginLeft: 10 }}>
-                        <div className="dropdown">
-                          <button
-                            className="btn btn-secondary dropdown-toggle"
-                            type="button"
-                            id="dropdownMenuButton0"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            {this.state.TagsType}
-                          </button>
-                          <div
-                            className="dropdown-menu"
-                            aria-labelledby="dropdownMenuButton0"
-                          >
-                            <a
-                              onClick={() =>
-                                this.setState({ TagsType: "pent" })
-                              }
-                              className="dropdown-item"
-                            >
-                              {" "}
-                              pent{" "}
-                            </a>
-
-                            <a
-                              onClick={() =>
-                                this.setState({ TagsType: "shirt" })
-                              }
-                              className="dropdown-item"
-                            >
-                              {" "}
-                              shirt{" "}
-                            </a>
-
-                            <a
-                              onClick={() =>
-                                this.setState({ TagsType: "Coat" })
-                              }
-                              className="dropdown-item"
-                            >
-                              {" "}
-                              Coat{" "}
-                            </a>
-
-                            <a
-                              onClick={() =>
-                                this.setState({ TagsType: "watches" })
-                              }
-                              className="dropdown-item"
-                            >
-                              {" "}
-                              watches{" "}
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="form-group" style={{ marginLeft: 10 }}>
-                        <div className="dropdown">
-                          <button
-                            className="btn btn-secondary dropdown-toggle"
-                            type="button"
-                            id="dropdownMenuButton0"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            {this.state.TagsColour}
-                          </button>
-                          <div
-                            className="dropdown-menu"
-                            aria-labelledby="dropdownMenuButton0"
-                          >
-                            <a
-                              onClick={() =>
-                                this.setState({ TagsColour: "red" })
-                              }
-                              className="dropdown-item"
-                            >
-                              {" "}
-                              red{" "}
-                            </a>
-
-                            <a
-                              onClick={() =>
-                                this.setState({ TagsColour: "blue" })
-                              }
-                              className="dropdown-item"
-                            >
-                              {" "}
-                              blue{" "}
-                            </a>
-
-                            <a
-                              onClick={() =>
-                                this.setState({ TagsColour: "green" })
-                              }
-                              className="dropdown-item"
-                            >
-                              {" "}
-                              green{" "}
-                            </a>
-
-                            <a
-                              onClick={() =>
-                                this.setState({ TagsColour: "other" })
-                              }
-                              className="dropdown-item"
-                            >
-                              {" "}
-                              other{" "}
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                 
-                  */}
                     </div>
 
                     <input

@@ -141,13 +141,6 @@ export const GetProduct = () => {
       });
       console.log(allData);
     });
-    // .then(function (doc) {
-    //   console.log(doc)
-    //   alert("Successfully Got")
-    // })
-    // .catch(function (error) {
-    //   console.error("Error adding document: ", error);
-    // });
   };
 };
 
@@ -176,20 +169,6 @@ export const GetStore = () => {
         payload: AllData
       });
     });
-    // return dispatch => {
-    //   Get("api/stores")
-    //     .then(res => {
-    //       alert("hello");
-    //       dispatch({
-    //         type: ActionType.GET_STORES,
-    //         payload: res.data
-    //       });
-    //       console.log("hellooooo", res.data);
-    //     })
-    //     .catch(err => {
-    //       alert("error happeneds");
-    //     });
-    // };
   };
 };
 export const DeleteStore = (id, history) => {
@@ -317,41 +296,93 @@ export const AddImageToStorage = path => {
     });
   };
 };
+export const AddStoreImage = path => {
+  return dispatch => {
+    alert("hello");
+    // let ref = firebase
+    //   .storage()
+    //   .ref(`ProductsImages/${Math.round(Math.random() * 99999)}`);
+    // ref.put(path).then(function(snapshot) {
+    //   ref
+    //     .getDownloadURL()
+    //     .then(function(url) {
+    //       // Insert url into an <img> tag to "download"
+    //       console.log(url, "MY IMAGE URL");
+    //       // alert("Hogyi add");
+    //       dispatch({
+    //         type: ActionType.ADD_IMAGE,
+    //         payload: url
+    //       });
+    //     })
+    //     .catch(function(error) {
+    //       // A full list of error codes is available at
+    //       // https://firebase.google.com/docs/storage/web/handle-errors
+    //       switch (error.code) {
+    //         case "storage/object-not-found":
+    //           // File doesn't exist
+    //           break;
 
-export const AddProductAdam = (productsData, store, history) => {
-  console.log(productsData.storeId, "LLLLLLogin");
+    //         case "storage/unauthorized":
+    //           // User doesn't have permission to access the object
+    //           break;
+
+    //         case "storage/canceled":
+    //           // User canceled the upload
+    //           break;
+
+    //         case "storage/unknown":
+    //           // Unknown error occurred, inspect the server response
+    //           break;
+    //       }
+    //     });
+    // });
+  };
+};
+
+export const AddProductAdam = (productsData, history) => {
+  console.log(productsData, "LLLLLLogin");
   let db = firebase.firestore();
-  if (store.products) {
-    let allProducts = store.products;
-    allProducts.push(productsData);
-    let storeData = {
-      ...store,
-      products: allProducts
-    };
-    db.collection("Stores")
-      .doc(productsData.storeId)
-      .set(storeData)
-      .then(function(docRef) {
-        // console.log("Document written with ID: ", docRef.id);
-        alert("Successfully added");
-        window.location.reload();
-      })
-      .catch(function(error) {
-        console.error("Error adding document: ", error);
-      });
-  } else {
-    db.collection("Stores")
-      .doc(productsData.storeId)
-      .set({ ...store, products: [productsData] })
-      .then(function(docRef) {
-        // console.log("Document written with ID: ", docRef.id);
-        alert("Successfully Edit");
-        window.location.reload();
-      })
-      .catch(function(error) {
-        console.error("Error adding document: ", error);
-      });
-  }
+  db.collection("allProducts")
+    .add(productsData)
+    .then(() => {
+      alert("product added");
+    })
+    .catch(err => {
+      console.error("Error adding document: ", err);
+    });
+
+  // let db = firebase.firestore();
+  // if (store.products) {
+  //   let allProducts = store.products;
+  //   allProducts.push(productsData);
+  //   let storeData = {
+  //     ...store,
+  //     products: allProducts
+  //   };
+  //   db.collection("allProducts")
+  //     .doc(productsData.storeId)
+  //     .set(storeData)
+  //     .then(function(docRef) {
+  //       // console.log("Document written with ID: ", docRef.id);
+  //       alert("Successfully added");
+  //       window.location.reload();
+  //     })
+  //     .catch(function(error) {
+  //       console.error("Error adding document: ", error);
+  //     });
+  // } else {
+  //   db.collection("allProducts")
+  //     .doc(productsData.storeId)
+  //     .set({ ...store, products: [productsData] })
+  //     .then(function(docRef) {
+  //       // console.log("Document written with ID: ", docRef.id);
+  //       alert("Successfully added");
+  //       window.location.reload();
+  //     })
+  //     .catch(function(error) {
+  //       console.error("Error adding document: ", error);
+  //     });
+  // }
 
   alert("Product added ");
 };

@@ -84,8 +84,8 @@ export const ShowMoreDetailOfClothes = props => {
                     }}
                   >
                     {props.products[props.index] &&
-                      props.products[props.index].allImages &&
-                      props.products[props.index].allImages.map(val => {
+                      props.products[props.index].images &&
+                      props.products[props.index].images.map(val => {
                         return (
                           <div style={{ width: "25%" }}>
                             <img
@@ -94,8 +94,8 @@ export const ShowMoreDetailOfClothes = props => {
                                 height: 100,
                                 border: "1px solid lightgray"
                               }}
-                              src={val.path}
-                              onClick={() => setImage(val.path)}
+                              src={val}
+                              onClick={() => setImage(val)}
                               alt=""
                             />
                           </div>
@@ -115,17 +115,23 @@ export const ShowMoreDetailOfClothes = props => {
                   <div>
                     <span style={{ fontSize: 22, fontWeight: "600" }}>
                       Product Name:
-                    </span>{" "}
-                    <br />
+                    </span>
                     <span style={{ marginLeft: 50, fontSize: 22 }}>
-                      {props.products[props.index].productName}
+                      {props.products[props.index].name}
+                    </span>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: 22, fontWeight: "600" }}>
+                      type :
+                    </span>
+                    <span style={{ marginLeft: 50, fontSize: 22 }}>
+                      {props.products[props.index].type}
                     </span>
                   </div>
                   <div>
                     <span style={{ fontSize: 22, fontWeight: "600" }}>
                       PRICE:
-                    </span>{" "}
-                    <br />
+                    </span>
                     <span style={{ marginLeft: 50, fontSize: 22 }}>
                       {props.products[props.index].price}
                     </span>
@@ -134,9 +140,48 @@ export const ShowMoreDetailOfClothes = props => {
                     <span style={{ fontSize: 22, fontWeight: "600" }}>
                       Description:
                     </span>{" "}
-                    <br />
                     <span style={{ marginLeft: 50, fontSize: 22 }}>
                       {props.products[props.index].description}
+                    </span>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: 22, fontWeight: "600" }}>
+                      Store id :
+                    </span>{" "}
+                    <span style={{ marginLeft: 50, fontSize: 22 }}>
+                      {props.products[props.index].storeId}
+                    </span>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: 22, fontWeight: "600" }}>
+                      Gender :
+                    </span>{" "}
+                    <span style={{ marginLeft: 50, fontSize: 22 }}>
+                      {props.products[props.index].gender}
+                    </span>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: 22, fontWeight: "600" }}>
+                      material :
+                    </span>{" "}
+                    <span style={{ marginLeft: 50, fontSize: 22 }}>
+                      {props.products[props.index].material}
+                    </span>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: 22, fontWeight: "600" }}>
+                      discount :
+                    </span>{" "}
+                    <span style={{ marginLeft: 50, fontSize: 22 }}>
+                      {props.products[props.index].discount}
+                    </span>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: 22, fontWeight: "600" }}>
+                      Quantity :
+                    </span>{" "}
+                    <span style={{ marginLeft: 50, fontSize: 22 }}>
+                      {props.products[props.index].Quantity}
                     </span>
                   </div>
                 </div>
@@ -226,21 +271,25 @@ class Icons extends React.Component {
                               }}
                             >
                               <p style={{ fontWeight: "600", fontSize: 18 }}>
-                                {val.Discription}
+                                <span style={{ fontWeight: "600" }}>
+                                  {" "}
+                                  Name{" "}
+                                </span>
+                                :{val.name}
                               </p>
                             </div>
-                            <div
+
+                            <img
                               style={{
-                                height: 110,
-                                width: "90%",
-                                textAlign: "center"
+                                width: "100%",
+                                height: "50%"
+                                // border: "1px solid transparent",
+                                // borderBottomColor: "black"
                               }}
-                            >
-                              <img
-                                style={{ width: "70%", height: "100%" }}
-                                alt=""
-                              />
-                            </div>
+                              src={val.images[0]}
+                              alt=""
+                            />
+
                             <div
                               style={{
                                 height: 50,
