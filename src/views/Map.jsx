@@ -51,12 +51,13 @@ class Map extends React.Component {
       material: "",
 
       category: "Select Category",
-      Quantity: "",
+      quantity: "",
       price: "",
-      product_Details: "",
+      description: "",
+      event: "select event ",
 
       images: [],
-      product_type: "",
+      event_Map: ["winter", "summer", "cristmas", "All"],
       discount: "",
       storeId: "5e09b4f72168722e2856acc4",
       storeName: "select store"
@@ -112,10 +113,10 @@ class Map extends React.Component {
       material,
       gender,
       category,
-      Quantity,
+      quantity,
       price,
       description,
-      type,
+      event,
       storeId,
       discount,
       Tagscategory
@@ -125,10 +126,10 @@ class Map extends React.Component {
       material !== "" &&
       gender !== "" &&
       category !== "" &&
-      Quantity !== "" &&
+      quantity !== "" &&
       price !== "" &&
       description !== "" &&
-      type !== "" &&
+      event !== "" &&
       discount !== "" &&
       Tagscategory !== "" &&
       storeId !== ""
@@ -136,13 +137,15 @@ class Map extends React.Component {
       console.log("done");
       let data = {
         name,
+        price,
+        category,
+        event,
         material,
         gender,
-        category,
-        Quantity,
-        price,
+
+        quantity,
         description,
-        type,
+
         discount,
         storeId,
         tags: [...Tagscategory.split(","), ...this.state.AITags],
@@ -247,7 +250,7 @@ class Map extends React.Component {
                           className="dropdown-menu"
                           aria-labelledby="dropdownMenuButton0"
                         >
-                          {this.props.store &&
+                          {this.props.store.lenght !== "" ? (
                             this.props.store.map((item, i) => {
                               return (
                                 <a
@@ -255,17 +258,22 @@ class Map extends React.Component {
                                   onClick={() => {
                                     this.handleChange("storeId", item.id);
                                     this.setState({
-                                      storeName: item.Storename,
+                                      storeName: item.storeName,
                                       store: item,
                                       storeId: item.id
                                     });
                                     console.log("testing id ", item.id);
                                   }}
                                 >
-                                  {item.Storename}
+                                  {item.storeName}
                                 </a>
                               );
-                            })}
+                            })
+                          ) : (
+                            <a className="dropdown-item">
+                              {" No store added "}
+                            </a>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -366,9 +374,9 @@ class Map extends React.Component {
                       <input
                         type="text"
                         className="form-control"
-                        value={this.state.product_Details}
+                        value={this.state.description}
                         onChange={e =>
-                          this.setState({ product_Details: e.target.value })
+                          this.setState({ description: e.target.value })
                         }
                         id="formGroupExampleInput"
                         placeholder="Your Product Details"
@@ -380,27 +388,61 @@ class Map extends React.Component {
                       <input
                         type="number"
                         className="form-control"
-                        value={this.state.Quantity}
+                        value={this.state.qantity}
                         onChange={e =>
-                          this.setState({ Quantity: e.target.value })
+                          this.setState({ quantity: e.target.value })
                         }
                         id="formGroupExampleInput"
                         placeholder="Your Product Quantity"
                       />
                     </div>
 
-                    <div className="form-group">
+                    {/* <div className="form-group">
                       <label for="formGroupExampleInput"> Product Type </label>
                       <input
                         type="text"
                         className="form-control"
-                        value={this.state.product_type}
-                        onChange={e =>
-                          this.setState({ product_type: e.target.value })
-                        }
+                        // value={this.state.event}
+                        onChange={e => this.setState({ event: e.target.value })}
                         id="formGroupExampleInput"
                         placeholder="Product Type"
                       />
+                    </div> */}
+
+                    <div className="form-group" style={{ marginLeft: 10 }}>
+                      <label for="formGroupExampleInput">
+                        {" "}
+                        select specific event{" "}
+                      </label>
+                      <div className="dropdown">
+                        <button
+                          className="btn btn-secondary dropdown-toggle"
+                          type="button"
+                          id="dropdownMenuButton0"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          // value={this.state.event}
+                          aria-expanded="false"
+                        >
+                          {this.state.event}
+                        </button>
+                        <div
+                          className="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton0"
+                        >
+                          {this.state.event_Map.map((item, i) => {
+                            return (
+                              <a
+                                onClick={() => this.setState({ event: item })}
+                                className="dropdown-item"
+                              >
+                                {" "}
+                                {item}{" "}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
 
                     <div className="form-group" style={{ marginLeft: 10 }}>
@@ -443,6 +485,7 @@ class Map extends React.Component {
                         </div>
                       </div>
                     </div>
+
                     <div>
                       <img
                         src={
@@ -491,13 +534,7 @@ class Map extends React.Component {
                             }
                           });
                           this.setState({ loading: false });
-                          this.props.AddImageToStorage(image); // reader.onload = e => {
-                          //   image = e.target.result;
-
-                          //   // this.setState({ allImages });
-                          //   // console.log("Running", allImages);
-                          // };
-                          // .reader.readAsDataURL(e.target.files[0]);
+                          this.props.AddImageToStorage(image);
                         }}
                       />
                     </div>
