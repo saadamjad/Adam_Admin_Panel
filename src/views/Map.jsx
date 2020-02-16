@@ -33,6 +33,7 @@ import { GetProductCategory } from "Store/actions/userAuth";
 import { GetStore } from "Store/actions/userAuth";
 import { AddProductAdam } from "Store/actions/userAuth";
 import { AddImageToStorage } from "Store/actions/userAuth";
+import Axios from "axios";
 
 class Map extends React.Component {
   constructor(props) {
@@ -117,8 +118,6 @@ class Map extends React.Component {
       type,
       storeId,
       discount,
-      TagsColour,
-      TagsType,
       Tagscategory
     } = this.state;
     if (
@@ -131,8 +130,6 @@ class Map extends React.Component {
       description !== "" &&
       type !== "" &&
       discount !== "" &&
-      TagsColour !== "" &&
-      TagsType !== "" &&
       Tagscategory !== "" &&
       storeId !== ""
     ) {
@@ -148,21 +145,23 @@ class Map extends React.Component {
         type,
         discount,
         storeId,
-        tags: [Tagscategory, TagsType, TagsColour],
+        tags: [...Tagscategory.split(","), ...this.state.AITags],
         images: this.props.images
       };
+      console.log(data);
       this.props.AddProductAdam(data, this.props.history);
-      //   this.setState({
-      //     productName: "",
-      //     location: "",
-      //     price: "",
-      //     priceRange: "",
-      //     category: "",
-      //     rating: "",
-      //     phoneNumber: "",
-      //     vicinity: "",
-      //     tags: ""
-      //   });
+      this.setState({
+        productName: "",
+        location: "",
+        price: "",
+        priceRange: "",
+        category: "",
+        rating: "",
+        phoneNumber: "",
+        vicinity: "",
+        tags: "",
+        AITags: []
+      });
     } else {
       alert("Kindly fill all values");
       console.log(this.state);
@@ -444,6 +443,64 @@ class Map extends React.Component {
                         </div>
                       </div>
                     </div>
+                    <div>
+                      <img
+                        src={
+                          this.state.image
+                            ? URL.createObjectURL(this.state.image)
+                            : null
+                        }
+                        style={{ height: 100, width: 100, marginRight: 10 }}
+                      />
+                      <input
+                        type="file"
+                        onChange={e => {
+                          // let reader = new FileReader();
+                          let image = e.target.files[0];
+                          this.setState({ image: image, loading: true });
+                          let data = new FormData();
+                          data.append("file", image);
+                          //this.setState({ loading: true });
+                          Axios.post(
+                            "https://dry-taiga-90913.herokuapp.com/" +
+                              "api/upload",
+                            data,
+                            {
+                              headers: {
+                                "Content-type": "multipart/form-data",
+                                Authorization:
+                                  "bearer " +
+                                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI1ZGY3YjdhMzNlYjQ2MTEzYzgxNjkwNjMiLCJpYXQiOjE1NzY1MjQ0NDJ9.kxXL0-mTUQvQMyUQy70_UNTU1A5xeW3QwGoAt4xAkj8"
+                              }
+                            }
+                          ).then(async response => {
+                            //console.log(response);
+                            if (response.status == 200) {
+                              let rawTags = [];
+                              let categories = [];
+
+                              console.log(categories);
+                              response.data.forEach(text => {
+                                if (text.includes("color")) {
+                                  let test = text.replace(" color", "");
+                                  rawTags.push(test);
+                                } else rawTags.push(text);
+
+                                this.setState({ AITags: rawTags });
+                              });
+                            }
+                          });
+                          this.setState({ loading: false });
+                          this.props.AddImageToStorage(image); // reader.onload = e => {
+                          //   image = e.target.result;
+
+                          //   // this.setState({ allImages });
+                          //   // console.log("Running", allImages);
+                          // };
+                          // .reader.readAsDataURL(e.target.files[0]);
+                        }}
+                      />
+                    </div>
 
                     <div
                       className="form-group"
@@ -458,69 +515,58 @@ class Map extends React.Component {
                           fontWeight: "bold"
                         }}
                       >
-                        Enter Tags For AI{" "}
+                        Enter Tags For AI (Select Image to Automatically detect)
                       </label>
                     </div>
-
+                    {this.state.loading ? <div>LOADING...</div> : null}
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      {this.state.AITags
+                        ? this.state.AITags.map((tag, index) => {
+                            return (
+                              <div
+                                style={{
+                                  padding: 4,
+                                  backgroundColor: "#66615b",
+                                  margin: 4,
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  borderRadius: 6
+                                }}
+                                onClick={() => {
+                                  let tags = [...this.state.AITags];
+                                  tags.splice(index, 1);
+                                  this.setState({ AITags: tags });
+                                }}
+                              >
+                                <label style={{ color: "white" }}>{tag}</label>
+                                <p
+                                  style={{
+                                    display: "inline",
+                                    marginLeft: 8,
+                                    color: "white"
+                                  }}
+                                >
+                                  x
+                                </p>
+                              </div>
+                            );
+                          })
+                        : null}
+                    </div>
                     <div className="form-group">
-                      <label for="formGroupExampleInput">
-                        {" "}
-                        Enter Category{" "}
-                      </label>
-                      <input
-                        type="text"
+                      <label for="formGroupExampleInput"> Search Terms </label>
+                      <textarea
+                        //type="text"
                         className="form-control"
-                        value={this.state.Tagscategory}
+                        value={this.state.tags}
                         onChange={e =>
                           this.setState({ Tagscategory: e.target.value })
                         }
                         id="formGroupExampleInput"
-                        placeholder="Product Type"
+                        placeholder="Type possible terms that can be used to search the Product,
+                        MUST BE COMMA SEPARATED eg Digital Watch,Stylish,Trendy,Featured"
                       />
                     </div>
-                    <div className="form-group">
-                      <label for="formGroupExampleInput"> Enter Type </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={this.state.TagsType}
-                        onChange={e =>
-                          this.setState({ TagsType: e.target.value })
-                        }
-                        id="formGroupExampleInput"
-                        placeholder="Product Type"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label for="formGroupExampleInput"> Enter colours </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={this.state.TagsColour}
-                        onChange={e =>
-                          this.setState({ TagsColour: e.target.value })
-                        }
-                        id="formGroupExampleInput"
-                        placeholder="Product Type"
-                      />
-                    </div>
-
-                    <input
-                      type="file"
-                      onChange={e => {
-                        // let reader = new FileReader();
-                        let image = e.target.files[0];
-                        this.props.AddImageToStorage(image);
-
-                        // reader.onload = e => {
-                        //   image = e.target.result;
-
-                        //   // this.setState({ allImages });
-                        //   // console.log("Running", allImages);
-                        // };
-                        // .reader.readAsDataURL(e.target.files[0]);
-                      }}
-                    />
 
                     {this.props.location.state === undefined ? (
                       <button
@@ -539,27 +585,6 @@ class Map extends React.Component {
                         Edit
                       </button>
                     )}
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: " space-around",
-                        alignItems: "center",
-                        flexWrap: "wrap"
-                      }}
-                    >
-                      {this.state.images !== undefined &&
-                        this.state.images.map((val, key) => {
-                          return (
-                            <div key={key} style={{ width: 150, height: 120 }}>
-                              <img
-                                style={{ width: "100%", height: "100%" }}
-                                src={val}
-                                alt="image"
-                              />
-                            </div>
-                          );
-                        })}
-                    </div>
                   </div>
                 </CardBody>
               </Card>
