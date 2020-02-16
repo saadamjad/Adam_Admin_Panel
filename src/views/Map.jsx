@@ -510,7 +510,9 @@ class Map extends React.Component {
                       onChange={e => {
                         // let reader = new FileReader();
                         let image = e.target.files[0];
-                        this.props.AddImageToStorage(image); // reader.onload = e => {
+                        this.props.AddImageToStorage(image);
+
+                        // reader.onload = e => {
                         //   image = e.target.result;
 
                         //   // this.setState({ allImages });

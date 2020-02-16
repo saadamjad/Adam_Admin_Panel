@@ -52,6 +52,7 @@ export default (state = initialState, action) => {
       return { ...state, getProductCategory: action.payload };
 
     case ActionType.STORE_IMAGE:
+      console.log("this is actiion", action.payload);
       return { ...state, StoreImage: action.payload };
 
     default:

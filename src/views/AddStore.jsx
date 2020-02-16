@@ -31,6 +31,7 @@ import { AddProduct } from "Store/actions/userAuth";
 import { EditProduct } from "Store/actions/userAuth";
 import { AddStore } from "Store/actions/userAuth";
 import { AddStoreImage } from "Store/actions/userAuth";
+// import {StoreImage} from 'stor'
 
 class Map extends React.Component {
   constructor(props) {
@@ -38,7 +39,7 @@ class Map extends React.Component {
     this.state = {
       isOpen: false,
 
-      allImages: [],
+      store_image: "",
 
       storeName: "",
       country: "",
@@ -87,16 +88,29 @@ class Map extends React.Component {
     if (storeName !== "" && category !== "" && discription !== "") {
       console.log("done");
       let data = {
-        Storename: storeName,
-        Discription: discription,
+        storeName: storeName,
+        description: discription,
         category: category,
-        country: country
+        country: country,
+        storeImage: this.props.storeImage
       };
-      this.props.addProduct(data, this.props.history);
+      this.props.addStore(data);
     } else {
-      alert("Kindly fill all values");
+      alert("Kindly fill all valuess");
     }
   };
+  // componentDidMount() {
+  //   console.log("for testing ", this.props.storeImage);
+  // }
+
+  componentWillReceiveProps(nextProps) {
+    // console.log("testing new componements", nextProps.storeImage);
+    this.setState({ store_image: nextProps.storeImage });
+    // let allImages = this.state.test;
+    // allImages.push(nextProps.storeImage);
+    // this.setState(allImages);
+    // console.log("testing ", this.state.test);
+  }
 
   render() {
     console.log(this.props);
@@ -106,7 +120,6 @@ class Map extends React.Component {
           <Row>
             <Col md="12">
               <Card>
-                <CardHeader>Add Products</CardHeader>
                 <CardBody>
                   <div>
                     <div
@@ -117,16 +130,35 @@ class Map extends React.Component {
                         flexWrap: "wrap"
                       }}
                     >
-                      {this.state.allImages.map((val, key) => {
-                        return (
-                          <div key={key} style={{ width: 150, height: 120 }}>
-                            <img
-                              style={{ width: "100%", height: "100%" }}
-                              src={val}
-                            />
-                          </div>
-                        );
-                      })}
+                      <Card
+                        style={{
+                          width: "25%",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          alignItems: "center"
+                          // backgroundColor: "red"
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: 200,
+                            height: 150,
+                            borderWidth: 1,
+                            borderRadius: 10
+                          }}
+                        >
+                          <img
+                            style={{ width: "100%", height: "100%" }}
+                            src={
+                              this.state.store_image
+                                ? this.state.store_image
+                                : null
+                            }
+                            alt="image"
+                          />
+                        </div>
+                      </Card>
                     </div>
 
                     <div className="form-group">
@@ -182,7 +214,7 @@ class Map extends React.Component {
                       />
                     </div>
 
-                    <input
+                    {/* <input
                       type="file"
                       onChange={e => {
                         let reader = new FileReader();
@@ -190,11 +222,22 @@ class Map extends React.Component {
                         reader.onload = e => {
                           allImages.push(e.target.result);
                           this.setState({ allImages });
-                          // console.log("Running", allImages);
+                          console.log("response", e);
                         };
-                        console.log("hello", this.state.allImages);
+                        // console.log("hello", this.state.allImages);
                         reader.readAsDataURL(e.target.files[0]);
+                        this.props.StoreImages(this.state.allImages);
+
                         // console.log("for testing ", e.target.files[0]);
+                      }}
+                    /> */}
+                    <input
+                      type="file"
+                      onChange={e => {
+                        // let reader = new FileReader();
+                        let image = e.target.files[0];
+
+                        this.props.StoreImages(image);
                       }}
                     />
 
@@ -202,18 +245,12 @@ class Map extends React.Component {
                       <button
                         type="button"
                         class="btn btn-info"
-                        onClick={
-                          (() => this.addProduct(), console.log("All image"))
-                        }
+                        onClick={() => this.addProduct()}
                       >
                         Add
                       </button>
                     ) : (
-                      <button
-                        type="button"
-                        class="btn btn-info"
-                        // onClick={() => this.editProduct()}
-                      >
+                      <button type="button" class="btn btn-info">
                         Edit
                       </button>
                     )}
@@ -229,9 +266,13 @@ class Map extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addProduct: (obj, history) => dispatch(AddStore(obj, history)),
+  addStore: (obj, history) => dispatch(AddStore(obj, history)),
   editProduct: (obj, history) => dispatch(EditProduct(obj, history)),
   StoreImages: (obj, history) => dispatch(AddStoreImage(obj, history))
 });
 
-export default connect(null, mapDispatchToProps)(Map);
+const mapActionToProps = state => ({
+  storeImage: state.Login.StoreImage
+});
+
+export default connect(mapActionToProps, mapDispatchToProps)(Map);
