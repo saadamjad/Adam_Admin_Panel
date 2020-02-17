@@ -333,7 +333,7 @@ class Map extends React.Component {
                     <div className="form-group">
                       <label for="formGroupExampleInput">Price</label>
                       <input
-                        type="text"
+                        type="number"
                         className="form-control"
                         value={this.state.price}
                         onChange={e => this.setState({ price: e.target.value })}
@@ -344,7 +344,7 @@ class Map extends React.Component {
                     <div className="form-group">
                       <label for="formGroupExampleInput">Discount</label>
                       <input
-                        type="text"
+                        type="number"
                         className="form-control"
                         value={this.state.discount}
                         onChange={e =>
