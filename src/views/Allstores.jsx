@@ -76,41 +76,11 @@ export const ShowMoreDetailOfClothes = props => {
                       border: "1px solid transparent",
                       borderBottomColor: "black"
                     }}
-                    src={firstImage}
+                    src={props.store[props.index].storeImage}
                     alt=""
                   />
-                  <div
-                    style={{
-                      width: "100%",
-                      display: "flex",
-                      border: "1px solid transparent",
-                      borderBottomColor: "lightgray",
-                      paddingBottom: 10,
-                      marginTop: 10,
-                      justifyContent: "space-around"
-                      // flexWrap: "wrap",
-                    }}
-                  >
-                    {props.store[props.index] &&
-                      props.store[props.index].allImages &&
-                      props.store[props.index].allImages.map(val => {
-                        return (
-                          <div style={{ width: "25%" }}>
-                            <img
-                              style={{
-                                width: "100%",
-                                height: 100,
-                                border: "1px solid lightgray"
-                              }}
-                              src={val.path}
-                              onClick={() => setImage(val.path)}
-                              alt=""
-                            />
-                          </div>
-                        );
-                      })}
-                  </div>
                 </div>
+
                 <div
                   style={{
                     width: "50%",
@@ -125,7 +95,7 @@ export const ShowMoreDetailOfClothes = props => {
                       Store Name:
                     </span>{" "}
                     <span style={{ marginLeft: 10, fontSize: 17 }}>
-                      {props.store[props.index].Storename}
+                      {props.store[props.index].storeName}
                     </span>
                   </div>
                   <br />
@@ -143,7 +113,7 @@ export const ShowMoreDetailOfClothes = props => {
                       Description:
                     </span>{" "}
                     <span style={{ marginLeft: 10, fontSize: 17 }}>
-                      {props.store[props.index].Discription}
+                      {props.store[props.index].description}
                     </span>
                   </div>
                   <br />
@@ -153,6 +123,14 @@ export const ShowMoreDetailOfClothes = props => {
                     </span>{" "}
                     <span style={{ marginLeft: 10, fontSize: 17 }}>
                       {props.store[props.index].country}
+                    </span>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: 17, fontWeight: "600" }}>
+                      Address:
+                    </span>{" "}
+                    <span style={{ marginLeft: 10, fontSize: 17 }}>
+                      {props.store[props.index].storeAddress}
                     </span>
                   </div>
                 </div>
@@ -227,7 +205,13 @@ class Icons extends React.Component {
                               display: "flex",
                               flexDirection: "column",
                               justifyContent: "center",
-                              alignItems: "center"
+                              alignItems: "center",
+                              margin: 10,
+                              webkitBoxShadow: "1px 3px 1px #9E9E9E",
+                              mozBoxShadow: "1px 3px 1px #9E9E9E",
+                              boxShadow: "1px 3px 1px #9E9E9E",
+                              backgroundColor: "white",
+                              marginTop: 17
                             }}
                             onClick={() => this.changeCom(index)}
                           >
@@ -242,7 +226,7 @@ class Icons extends React.Component {
                               }}
                             >
                               <p style={{ fontWeight: "600", fontSize: 18 }}>
-                                {val.Storename}
+                                {val.storeName}
                               </p>
                             </div>
                             <div
@@ -255,6 +239,7 @@ class Icons extends React.Component {
                               <img
                                 style={{ width: "70%", height: "100%" }}
                                 alt=""
+                                src={val.storeImage}
                               />
                             </div>
                             <div

@@ -40,6 +40,7 @@ class Map extends React.Component {
       isOpen: false,
 
       store_image: "",
+      storeAddress: "",
 
       storeName: "",
       country: "",
@@ -77,12 +78,12 @@ class Map extends React.Component {
     });
   };
 
-  addProduct = () => {
+  addStore = () => {
     let {
       storeName,
       discription,
       country,
-
+      storeAddress,
       category
     } = this.state;
     if (storeName !== "" && category !== "" && discription !== "") {
@@ -92,7 +93,31 @@ class Map extends React.Component {
         description: discription,
         category: category,
         country: country,
-        storeImage: this.props.storeImage
+        storeImage: this.props.storeImage,
+        storeAddress: storeAddress
+      };
+      this.props.addStore(data, this.props.history);
+    } else {
+      alert("Kindly fill all valuess");
+    }
+  };
+  editStore = () => {
+    let {
+      storeName,
+      discription,
+      country,
+      category,
+      storeAddress
+    } = this.state;
+    if (storeName !== "" && category !== "" && discription !== "") {
+      console.log("done");
+      let data = {
+        storeName: storeName,
+        description: discription,
+        category: category,
+        country: country,
+        storeImage: this.props.storeImage,
+        storeAddress: storeAddress
       };
       this.props.addStore(data);
     } else {
@@ -214,6 +239,20 @@ class Map extends React.Component {
                       />
                     </div>
 
+                    <div className="form-group">
+                      <label for="formGroupExampleInput"> store Address</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={this.state.storeAddress}
+                        onChange={e =>
+                          this.setState({ storeAddress: e.target.value })
+                        }
+                        id="formGroupExampleInput"
+                        placeholder="Your Product Name"
+                      />
+                    </div>
+
                     {/* <input
                       type="file"
                       onChange={e => {
@@ -245,7 +284,7 @@ class Map extends React.Component {
                       <button
                         type="button"
                         class="btn btn-info"
-                        onClick={() => this.addProduct()}
+                        onClick={() => this.addStore()}
                       >
                         Add
                       </button>

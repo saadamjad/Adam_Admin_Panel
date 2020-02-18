@@ -51,9 +51,9 @@ class Map extends React.Component {
       material: "",
 
       category: "Select Category",
-      quantity: "",
+      quantityAvailable: "",
       price: "",
-      description: "",
+      itemDetails: "",
       event: "select event ",
 
       images: [],
@@ -113,9 +113,9 @@ class Map extends React.Component {
       material,
       gender,
       category,
-      quantity,
+      quantityAvailable,
       price,
-      description,
+      itemDetails,
       event,
       storeId,
       discount,
@@ -126,9 +126,9 @@ class Map extends React.Component {
       material !== "" &&
       gender !== "" &&
       category !== "" &&
-      quantity !== "" &&
+      quantityAvailable !== "" &&
       price !== "" &&
-      description !== "" &&
+      itemDetails !== "" &&
       event !== "" &&
       discount !== "" &&
       Tagscategory !== "" &&
@@ -143,15 +143,15 @@ class Map extends React.Component {
         material,
         gender,
 
-        quantity,
-        description,
+        quantityAvailable,
+        itemDetails,
 
         discount,
         storeId,
         tags: [...Tagscategory.split(","), ...this.state.AITags],
         images: this.props.images
       };
-      console.log(data);
+      // console.log(data);
       this.props.AddProductAdam(data, this.props.history);
       this.setState({
         productName: "",
@@ -173,7 +173,7 @@ class Map extends React.Component {
   //   editProduct = () => {
   //     let {
   //       productName,
-  //       description,
+  //       itemDetails,
   //       price,
   //       allImages,
   //       gender,
@@ -182,7 +182,7 @@ class Map extends React.Component {
   //     } = this.state;
   //     if (
   //       productName !== "" &&
-  //       description !== "" &&
+  //       itemDetails !== "" &&
   //       price !== "" &&
   //       allImages.length !== 0 &&
   //       gender !== "GENDER" &&
@@ -191,7 +191,7 @@ class Map extends React.Component {
   //       console.log("done");
   //       let data = {
   //         productName,
-  //         description,
+  //         itemDetails,
   //         price,
   //         allImages,
   //         gender,
@@ -204,7 +204,7 @@ class Map extends React.Component {
   //       this.setState({
   //         allImages: [],
   //         productName: "",
-  //         description: "",
+  //         itemDetails: "",
   //         price: "",
   //         gender: "GENDER",
   //         ware: ""
@@ -374,9 +374,9 @@ class Map extends React.Component {
                       <input
                         type="text"
                         className="form-control"
-                        value={this.state.description}
+                        value={this.state.itemDetails}
                         onChange={e =>
-                          this.setState({ description: e.target.value })
+                          this.setState({ itemDetails: e.target.value })
                         }
                         id="formGroupExampleInput"
                         placeholder="Your Product Details"
@@ -384,16 +384,19 @@ class Map extends React.Component {
                     </div>
 
                     <div className="form-group">
-                      <label for="formGroupExampleInput"> Quantity </label>
+                      <label for="formGroupExampleInput">
+                        {" "}
+                        quantityAvailable{" "}
+                      </label>
                       <input
                         type="number"
                         className="form-control"
                         value={this.state.qantity}
                         onChange={e =>
-                          this.setState({ quantity: e.target.value })
+                          this.setState({ quantityAvailable: e.target.value })
                         }
                         id="formGroupExampleInput"
-                        placeholder="Your Product Quantity"
+                        placeholder="Your Product quantityAvailable"
                       />
                     </div>
 

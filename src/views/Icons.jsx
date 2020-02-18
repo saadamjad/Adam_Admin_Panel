@@ -68,7 +68,7 @@ export const ShowMoreDetailOfClothes = props => {
                       border: "1px solid transparent",
                       borderBottomColor: "black"
                     }}
-                    src={firstImage}
+                    src={props.products[props.index].images}
                     alt=""
                   />
                   <div
@@ -122,10 +122,18 @@ export const ShowMoreDetailOfClothes = props => {
                   </div>
                   <div>
                     <span style={{ fontSize: 22, fontWeight: "600" }}>
-                      type :
+                      event :
                     </span>
                     <span style={{ marginLeft: 50, fontSize: 22 }}>
-                      {props.products[props.index].type}
+                      {props.products[props.index].event}
+                    </span>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: 22, fontWeight: "600" }}>
+                      category :
+                    </span>
+                    <span style={{ marginLeft: 50, fontSize: 22 }}>
+                      {props.products[props.index].category}
                     </span>
                   </div>
                   <div>
@@ -141,7 +149,7 @@ export const ShowMoreDetailOfClothes = props => {
                       Description:
                     </span>{" "}
                     <span style={{ marginLeft: 50, fontSize: 22 }}>
-                      {props.products[props.index].description}
+                      {props.products[props.index].itemDetails}
                     </span>
                   </div>
                   <div>
@@ -173,7 +181,7 @@ export const ShowMoreDetailOfClothes = props => {
                       discount :
                     </span>{" "}
                     <span style={{ marginLeft: 50, fontSize: 22 }}>
-                      {props.products[props.index].discount}
+                      {props.products[props.index].discount} <a> %</a>
                     </span>
                   </div>
                   <div>
@@ -181,7 +189,7 @@ export const ShowMoreDetailOfClothes = props => {
                       Quantity :
                     </span>{" "}
                     <span style={{ marginLeft: 50, fontSize: 22 }}>
-                      {props.products[props.index].Quantity}
+                      {props.products[props.index].quantityAvailable}
                     </span>
                   </div>
                 </div>
@@ -256,7 +264,13 @@ class Icons extends React.Component {
                               display: "flex",
                               flexDirection: "column",
                               justifyContent: "center",
-                              alignItems: "center"
+                              alignItems: "center",
+                              margin: 10,
+                              webkitBoxShadow: "1px 3px 1px #9E9E9E",
+                              mozBoxShadow: "1px 3px 1px #9E9E9E",
+                              boxShadow: "1px 3px 1px #9E9E9E",
+                              backgroundColor: "white",
+                              marginTop: 17
                             }}
                             onClick={() => this.changeCom(index)}
                           >
