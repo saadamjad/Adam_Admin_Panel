@@ -483,8 +483,8 @@ class Map extends React.Component {
                               response.data.forEach(text => {
                                 if (text.includes("color")) {
                                   let test = text.replace(" color", "");
-                                  rawTags.push(test);
-                                } else rawTags.push(text);
+                                  rawTags.push(test.toLowerCase());
+                                } else rawTags.push(text.toLowerCase());
 
                                 this.setState({ AITags: rawTags });
                               });
@@ -560,7 +560,9 @@ class Map extends React.Component {
                         className="form-control"
                         value={this.state.tags}
                         onChange={e =>
-                          this.setState({ Tagscategory: e.target.value })
+                          this.setState({
+                            Tagscategory: e.target.value.toLowerCase()
+                          })
                         }
                         id="formGroupExampleInput"
                         placeholder="Type possible terms that can be used to search the Product,
