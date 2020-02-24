@@ -145,6 +145,7 @@ export const GetProduct = () => {
 };
 
 export const AddStore = data => async dispatch => {
+  dispatch({ type: ActionType.LOADER });
   let db = firebase.firestore();
   db.collection("Stores")
     .add(data)
@@ -155,6 +156,7 @@ export const AddStore = data => async dispatch => {
     .catch(function(error) {
       console.error("Error adding document: ", error);
     });
+  dispatch({ type: ActionType.STOP_LOADER });
 };
 export const GetStore = () => {
   return dispatch => {
@@ -339,49 +341,14 @@ export const AddStoreImage = path => {
 };
 
 export const AddProductAdam = (productsData, history) => {
-  console.log(productsData, "LLLLLLogin");
   let db = firebase.firestore();
   db.collection("allProducts")
     .add(productsData)
     .then(() => {
       alert("product added");
+      history.push("/admin/icons");
     })
     .catch(err => {
       console.error("Error adding document: ", err);
     });
-
-  // let db = firebase.firestore();
-  // if (store.products) {
-  //   let allProducts = store.products;
-  //   allProducts.push(productsData);
-  //   let storeData = {
-  //     ...store,
-  //     products: allProducts
-  //   };
-  //   db.collection("allProducts")
-  //     .doc(productsData.storeId)
-  //     .set(storeData)
-  //     .then(function(docRef) {
-  //       // console.log("Document written with ID: ", docRef.id);
-  //       alert("Successfully added");
-  //       window.location.reload();
-  //     })
-  //     .catch(function(error) {
-  //       console.error("Error adding document: ", error);
-  //     });
-  // } else {
-  //   db.collection("allProducts")
-  //     .doc(productsData.storeId)
-  //     .set({ ...store, products: [productsData] })
-  //     .then(function(docRef) {
-  //       // console.log("Document written with ID: ", docRef.id);
-  //       alert("Successfully added");
-  //       window.location.reload();
-  //     })
-  //     .catch(function(error) {
-  //       console.error("Error adding document: ", error);
-  //     });
-  // }
-
-  alert("Product added ");
 };

@@ -252,7 +252,14 @@ class Icons extends React.Component {
                                 alignItems: "center"
                               }}
                             >
-                              <p style={{ fontSize: 18 }}>
+                              <p
+                                style={{
+                                  fontSize: 18,
+                                  textAlign: "center",
+                                  marginTop: 20,
+                                  fontSize: 14
+                                }}
+                              >
                                 <span style={{ fontWeight: "600" }}>
                                   {" "}
                                   Category{" "}

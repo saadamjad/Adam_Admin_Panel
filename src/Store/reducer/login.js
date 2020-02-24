@@ -18,6 +18,16 @@ export default (state = initialState, action) => {
   switch (action.type) {
     // STEPPER
 
+    case ActionType.LOADER:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case ActionType.STOP_LOADER:
+      return {
+        ...state,
+        isLoading: false
+      };
     case ActionType.Login_SUCCESS:
       return {
         ...state,

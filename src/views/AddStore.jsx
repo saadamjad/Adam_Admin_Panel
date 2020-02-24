@@ -32,6 +32,9 @@ import { EditProduct } from "Store/actions/userAuth";
 import { AddStore } from "Store/actions/userAuth";
 import { AddStoreImage } from "Store/actions/userAuth";
 // import {StoreImage} from 'stor'
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+
+import Loader from "react-loader-spinner";
 
 class Map extends React.Component {
   constructor(props) {
@@ -44,9 +47,18 @@ class Map extends React.Component {
 
       storeName: "",
       country: "",
-
-      category: "",
-      discription: ""
+      allCategory: [
+        "cloths",
+        "shoes",
+        "Jackets",
+        "jewellery",
+        "Watches",
+        "Men wear",
+        "girls Wear"
+      ],
+      category: [],
+      discription: "",
+      storeMobileNumber: ""
     };
     this.toggle = this.toggle.bind(this);
     this.dropdownToggle = this.dropdownToggle.bind(this);
@@ -84,9 +96,17 @@ class Map extends React.Component {
       discription,
       country,
       storeAddress,
-      category
+      category,
+      storeMobileNumber
     } = this.state;
-    if (storeName !== "" && category !== "" && discription !== "") {
+    if (
+      storeName !== "" &&
+      discription !== "" &&
+      country !== "" &&
+      storeMobileNumber !== "" &&
+      storeAddress !== "" &&
+      category !== ""
+    ) {
       console.log("done");
       let data = {
         storeName: storeName,
@@ -94,9 +114,19 @@ class Map extends React.Component {
         category: category,
         country: country,
         storeImage: this.props.storeImage,
-        storeAddress: storeAddress
+        storeAddress: storeAddress,
+        storeMobileNumber: storeMobileNumber
       };
       this.props.addStore(data, this.props.history);
+      // this.setState({
+      //   storeName: "",
+      //   description: "",
+      //   category: "",
+      //   country: "",
+      //   storeImage: "",
+      //   storeAddress: "",
+      //   storeMobileNumber: ""
+      // });
     } else {
       alert("Kindly fill all valuess");
     }
@@ -124,9 +154,6 @@ class Map extends React.Component {
       alert("Kindly fill all valuess");
     }
   };
-  // componentDidMount() {
-  //   console.log("for testing ", this.props.storeImage);
-  // }
 
   componentWillReceiveProps(nextProps) {
     // console.log("testing new componements", nextProps.storeImage);
@@ -138,7 +165,8 @@ class Map extends React.Component {
   }
 
   render() {
-    console.log(this.props);
+    const allStoreCatgry_Variable = [...this.state.allCategory];
+    const storeCatgry_Variable = [...this.state.category];
     return (
       <>
         <div className="content">
@@ -185,6 +213,91 @@ class Map extends React.Component {
                         </div>
                       </Card>
                     </div>
+                    <div className="form-group" style={{ marginLeft: 10 }}>
+                      <label for="formGroupExampleInput">
+                        {" "}
+                        Select category of the store{" "}
+                      </label>
+                    </div>
+                    <div
+                      style={{
+                        flexDirection: "row",
+                        display: "flex",
+                        borderWidth: 1,
+                        width: "100%"
+                      }}
+                    >
+                      <div className="dropdown">
+                        <button
+                          className="btn btn-secondary dropdown-toggle"
+                          type="button"
+                          id="dropdownMenuButton0"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          // value={this.state.event}
+                          aria-expanded="false"
+                        >
+                          {"select Category "}
+                        </button>
+                        <div
+                          className="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton0"
+                        >
+                          {this.state.allCategory.map((item, i) => {
+                            return (
+                              <a
+                                onClick={() => {
+                                  storeCatgry_Variable.push(item);
+                                  allStoreCatgry_Variable.splice(i, 1);
+                                  this.setState({
+                                    category: storeCatgry_Variable,
+                                    allCategory: allStoreCatgry_Variable
+                                  });
+                                }}
+                                className="dropdown-item"
+                              >
+                                {" "}
+                                {item}{" "}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </div>{" "}
+                      {this.state.category.map((item, i) => {
+                        return (
+                          <div
+                            style={{
+                              padding: 4,
+                              backgroundColor: "#66615b",
+                              margin: 10,
+                              alignItems: "center",
+                              justifyContent: "center",
+                              borderRadius: 6
+                            }}
+                            onClick={() => {
+                              storeCatgry_Variable.splice(i, 1);
+                              allStoreCatgry_Variable.push(item);
+                              this.setState({
+                                category: storeCatgry_Variable,
+                                allCategory: allStoreCatgry_Variable
+                              });
+                              this.forceUpdate();
+                            }}
+                          >
+                            <label style={{ color: "white" }}> {item} </label>
+                            <p
+                              style={{
+                                display: "inline",
+                                marginLeft: 8,
+                                color: "white"
+                              }}
+                            >
+                              x
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
 
                     <div className="form-group">
                       <label for="formGroupExampleInput">Store Name</label>
@@ -212,19 +325,7 @@ class Map extends React.Component {
                         placeholder="Description"
                       />
                     </div>
-                    <div className="form-group">
-                      <label for="formGroupExampleInput"> Category</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={this.state.category}
-                        onChange={e =>
-                          this.setState({ category: e.target.value })
-                        }
-                        id="formGroupExampleInput"
-                        placeholder="Your Product Name"
-                      />
-                    </div>
+
                     <div className="form-group">
                       <label for="formGroupExampleInput"> country</label>
                       <input
@@ -249,27 +350,36 @@ class Map extends React.Component {
                           this.setState({ storeAddress: e.target.value })
                         }
                         id="formGroupExampleInput"
-                        placeholder="Your Product Name"
+                        placeholder="Store address"
                       />
                     </div>
+                    <div className="form-group">
+                      <label for="formGroupExampleInput"> Phone no </label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={this.state.storeMobileNumber}
+                        onChange={e =>
+                          this.setState({ storeMobileNumber: e.target.value })
+                        }
+                        id="formGroupExampleInput"
+                        placeholder="Store address"
+                      />
+                    </div>
+                    {/* <div className="form-group">
+                      <label for="formGroupExampleInput"> Category</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={this.state.category}
+                        onChange={e =>
+                          this.setState({ category: e.target.value })
+                        }
+                        id="formGroupExampleInput"
+                        placeholder="Your Product Name"
+                      />
+                    </div> */}
 
-                    {/* <input
-                      type="file"
-                      onChange={e => {
-                        let reader = new FileReader();
-                        let allImages = this.state.allImages;
-                        reader.onload = e => {
-                          allImages.push(e.target.result);
-                          this.setState({ allImages });
-                          console.log("response", e);
-                        };
-                        // console.log("hello", this.state.allImages);
-                        reader.readAsDataURL(e.target.files[0]);
-                        this.props.StoreImages(this.state.allImages);
-
-                        // console.log("for testing ", e.target.files[0]);
-                      }}
-                    /> */}
                     <input
                       type="file"
                       onChange={e => {
@@ -296,6 +406,26 @@ class Map extends React.Component {
                   </div>
                 </CardBody>
               </Card>
+
+              {this.props.Loader ? (
+                <div
+                  style={{
+                    alignItems: "center",
+                    position: "absolute",
+                    bottom: 0,
+                    right: 650
+                  }}
+                >
+                  <Loader
+                    type="Puff"
+                    color="#00BFFF"
+                    height={50}
+                    width={50}
+                    // style={}
+                    // timeout={3000} //3 secs
+                  />
+                </div>
+              ) : null}
             </Col>
           </Row>
         </div>
@@ -311,7 +441,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapActionToProps = state => ({
-  storeImage: state.Login.StoreImage
+  storeImage: state.Login.StoreImage,
+  Loader: state.Login.isLoading
 });
 
 export default connect(mapActionToProps, mapDispatchToProps)(Map);

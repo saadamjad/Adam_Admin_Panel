@@ -197,7 +197,7 @@ class Map extends React.Component {
                           })}
                       </div>
                     </div>
-                    <button
+                    {/* <button
                       style={{ marginLeft: 20 }}
                       type="button"
                       class="btn btn-info"
@@ -205,7 +205,7 @@ class Map extends React.Component {
                       //   onClick={() => alert("not working")}
                     >
                       Edit
-                    </button>
+                    </button> */}
                     <button
                       style={{ marginLeft: 20 }}
                       type="button"

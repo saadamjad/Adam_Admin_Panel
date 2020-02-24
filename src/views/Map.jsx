@@ -27,19 +27,23 @@ import {
 } from "reactstrap";
 // reactstrap components
 import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
-import { AddProduct } from "Store/actions/userAuth";
+// import { AddProduct } from "Store/actions/userAuth";
 import { EditProduct } from "Store/actions/userAuth";
 import { GetProductCategory } from "Store/actions/userAuth";
 import { GetStore } from "Store/actions/userAuth";
 import { AddProductAdam } from "Store/actions/userAuth";
 import { AddImageToStorage } from "Store/actions/userAuth";
 import Axios from "axios";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 
+import Loader from "react-loader-spinner";
 class Map extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isOpen: false,
+
+      none: null,
 
       gender: "Select gender",
       discount: "",
@@ -47,6 +51,7 @@ class Map extends React.Component {
       TagsType: "Select Type",
       TagsColour: "select colour",
       allImages: [],
+
       name: "",
       material: "",
 
@@ -57,6 +62,10 @@ class Map extends React.Component {
       event: "select event ",
 
       images: [],
+      colors: [],
+      sizes: [],
+      allSizes: ["small", "medium", "large", "X L"],
+      allColours: ["All Colours", "red", "blue", "green", "yellow"],
       event_Map: ["winter", "summer", "cristmas", "All"],
       discount: "",
       storeId: "5e09b4f72168722e2856acc4",
@@ -119,7 +128,9 @@ class Map extends React.Component {
       event,
       storeId,
       discount,
-      Tagscategory
+      Tagscategory,
+      colors,
+      sizes
     } = this.state;
     if (
       name !== "" &&
@@ -132,7 +143,9 @@ class Map extends React.Component {
       event !== "" &&
       discount !== "" &&
       Tagscategory !== "" &&
-      storeId !== ""
+      storeId !== "" &&
+      colors !== "" &&
+      sizes !== ""
     ) {
       console.log("done");
       let data = {
@@ -149,7 +162,11 @@ class Map extends React.Component {
         discount,
         storeId,
         tags: [...Tagscategory.split(","), ...this.state.AITags],
-        images: this.props.images
+        images: this.props.images,
+        colors: [],
+        sizes: [],
+        noOfPeopleReviewed: 0,
+        reviewRating: 0
       };
       // console.log(data);
       this.props.AddProductAdam(data, this.props.history);
@@ -163,7 +180,8 @@ class Map extends React.Component {
         phoneNumber: "",
         vicinity: "",
         tags: "",
-        AITags: []
+        AITags: [],
+        sizes: []
       });
     } else {
       alert("Kindly fill all values");
@@ -213,16 +231,56 @@ class Map extends React.Component {
   //       alert("Kindly fill all values");
   //     }
   //   };
+  HandleColour = (getitem, i) => {
+    console.log("getitem", getitem);
+    const colour = this.state.colors;
+    colour.push(getitem);
+    const allColour = this.state.allColours;
+
+    allColour.splice(i, 1);
+    console.log("array of colour", colour);
+    this.forceUpdate();
+  };
+  handleSizes = (getitem, i) => {
+    console.log("getitem", getitem);
+    const sizes_variable = this.state.sizes;
+    sizes_variable.push(getitem);
+    const all_sizes_variable = this.state.allSizes;
+
+    all_sizes_variable.splice(i, 1);
+    // console.log("array of colour", colour);
+    this.forceUpdate();
+  };
 
   render() {
     console.log(this.props.images, "PROPS");
+
     return (
       <>
         <div className="content">
           <Row>
+            {this.props.Loader ? (
+              <div
+                style={{
+                  alignItems: "center",
+                  position: "absolute",
+                  top: 0,
+                  right: 650
+                }}
+              >
+                <Loader
+                  type="Puff"
+                  color="#00BFFF"
+                  height={100}
+                  width={100}
+                  style={{ possible: "absolute", bottom: 0 }}
+                  // timeout={3000} //3 secs
+                />
+              </div>
+            ) : null}
+
             <Col md="12">
               <Card>
-                <CardHeader>Add Products</CardHeader>
                 <CardBody>
                   <div>
                     <div className="form-group">
@@ -336,7 +394,9 @@ class Map extends React.Component {
                         type="number"
                         className="form-control"
                         value={this.state.price}
-                        onChange={e => this.setState({ price: e.target.value })}
+                        onChange={e =>
+                          this.setState({ price: Number(e.target.value) })
+                        }
                         id="formGroupExampleInput"
                         placeholder="Price"
                       />
@@ -348,7 +408,7 @@ class Map extends React.Component {
                         className="form-control"
                         value={this.state.discount}
                         onChange={e =>
-                          this.setState({ discount: e.target.value })
+                          this.setState({ discount: Number(e.target.value) })
                         }
                         id="formGroupExampleInput"
                         placeholder="Your Product Discount"
@@ -393,24 +453,181 @@ class Map extends React.Component {
                         className="form-control"
                         value={this.state.qantity}
                         onChange={e =>
-                          this.setState({ quantityAvailable: e.target.value })
+                          this.setState({
+                            quantityAvailable: Number(e.target.value)
+                          })
                         }
                         id="formGroupExampleInput"
                         placeholder="Your Product quantityAvailable"
                       />
                     </div>
 
-                    {/* <div className="form-group">
-                      <label for="formGroupExampleInput"> Product Type </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        // value={this.state.event}
-                        onChange={e => this.setState({ event: e.target.value })}
-                        id="formGroupExampleInput"
-                        placeholder="Product Type"
-                      />
-                    </div> */}
+                    <div className="form-group" style={{ marginLeft: 10 }}>
+                      <label for="formGroupExampleInput">
+                        {" "}
+                        Product Colours{" "}
+                      </label>
+                    </div>
+                    <div
+                      style={{
+                        flexDirection: "row",
+                        display: "flex",
+                        borderWidth: 1,
+                        width: "100%"
+                      }}
+                    >
+                      <div className="dropdown">
+                        <button
+                          className="btn btn-secondary dropdown-toggle"
+                          type="button"
+                          id="dropdownMenuButton0"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          // value={this.state.event}
+                          aria-expanded="false"
+                        >
+                          {"select colors"}
+                        </button>
+                        <div
+                          className="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton0"
+                        >
+                          {this.state.allColours.map((item, i) => {
+                            return (
+                              <a
+                                onClick={() => this.HandleColour(item, i)}
+                                className="dropdown-item"
+                              >
+                                {" "}
+                                {item}{" "}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </div>{" "}
+                      {this.state.colors.map((item, i) => {
+                        return (
+                          <div
+                            style={{
+                              padding: 4,
+                              backgroundColor: "#66615b",
+                              margin: 10,
+                              alignItems: "center",
+                              justifyContent: "center",
+                              borderRadius: 6
+                            }}
+                            onClick={() => {
+                              let colors = [...this.state.colors];
+                              let All_colors_Variable = [
+                                ...this.state.allColours
+                              ];
+                              colors.splice(i, 1);
+
+                              All_colors_Variable.push(item);
+
+                              this.setState({
+                                colors: colors,
+                                allColours: All_colors_Variable
+                              });
+
+                              this.forceUpdate();
+                            }}
+                          >
+                            <label style={{ color: "white" }}> {item} </label>
+                            <p
+                              style={{
+                                display: "inline",
+                                marginLeft: 8,
+                                color: "white"
+                              }}
+                            >
+                              x
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="form-group" style={{ marginLeft: 10 }}>
+                      <label for="formGroupExampleInput"> Select Size </label>
+                    </div>
+                    <div
+                      style={{
+                        flexDirection: "row",
+                        display: "flex",
+                        borderWidth: 1,
+                        width: "100%"
+                      }}
+                    >
+                      <div className="dropdown">
+                        <button
+                          className="btn btn-secondary dropdown-toggle"
+                          type="button"
+                          id="dropdownMenuButton0"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          // value={this.state.event}
+                          aria-expanded="false"
+                        >
+                          {"select sizes"}
+                        </button>
+                        <div
+                          className="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton0"
+                        >
+                          {this.state.allSizes.map((item, i) => {
+                            return (
+                              <a
+                                onClick={() => this.handleSizes(item, i)}
+                                className="dropdown-item"
+                              >
+                                {" "}
+                                {item}{" "}
+                              </a>
+                            );
+                          })}
+                        </div>
+                      </div>{" "}
+                      {this.state.sizes.map((item, i) => {
+                        return (
+                          <div
+                            style={{
+                              padding: 4,
+                              backgroundColor: "#66615b",
+                              margin: 10,
+                              alignItems: "center",
+                              justifyContent: "center",
+                              borderRadius: 6
+                            }}
+                            onClick={() => {
+                              let size_variable = [...this.state.sizes];
+                              let All_sizes_Variable = [...this.state.allSizes];
+                              size_variable.splice(i, 1);
+
+                              All_sizes_Variable.push(item);
+
+                              this.setState({
+                                sizes: size_variable,
+                                allSizes: All_sizes_Variable
+                              });
+
+                              this.forceUpdate();
+                            }}
+                          >
+                            <label style={{ color: "white" }}> {item} </label>
+                            <p
+                              style={{
+                                display: "inline",
+                                marginLeft: 8,
+                                color: "white"
+                              }}
+                            >
+                              x
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
 
                     <div className="form-group" style={{ marginLeft: 10 }}>
                       <label for="formGroupExampleInput">
@@ -639,7 +856,7 @@ class Map extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  addProduct: (obj, history) => dispatch(AddProduct(obj, history)),
+  // addProduct: (obj, history) => dispatch(AddProduct(obj, history)),
   editProduct: (obj, history) => dispatch(EditProduct(obj, history)),
   getStore: (obj, history) => dispatch(GetStore(obj, history)),
   productCategory: (obj, history) => dispatch(GetProductCategory(obj, history)),
@@ -651,7 +868,8 @@ const mapDispatchToProps = dispatch => ({
 const mapActionToProps = state => ({
   store: state.Login.store,
   productCat: state.Login.getProductCategory,
-  images: state.Login.images
+  images: state.Login.images,
+  Loader: state.Login.isLoading
 });
 
 export default connect(mapActionToProps, mapDispatchToProps)(Map);
