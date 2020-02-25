@@ -402,7 +402,11 @@ class Map extends React.Component {
                       />
                     </div>
                     <div className="form-group">
-                      <label for="formGroupExampleInput">Discount</label>
+                      <label for="formGroupExampleInput">Discount</label>{" "}
+                      <label style={{ fontSize: 15, color: "red" }}>
+                        {" "}
+                        ( if no discount enter 0 value )
+                      </label>
                       <input
                         type="number"
                         className="form-control"

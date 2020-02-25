@@ -341,6 +341,7 @@ export const AddStoreImage = path => {
 };
 
 export const AddProductAdam = (productsData, history) => {
+  console.log("new data", productsData);
   let db = firebase.firestore();
   db.collection("allProducts")
     .add(productsData)
