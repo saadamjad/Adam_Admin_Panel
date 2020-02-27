@@ -167,7 +167,8 @@ class Map extends React.Component {
           name,
           category,
           event,
-          material
+          material,
+          itemDetails
         ],
         images: this.props.images,
         colors: [],
