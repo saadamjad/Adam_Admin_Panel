@@ -161,7 +161,14 @@ class Map extends React.Component {
 
         discount,
         storeId,
-        tags: [...Tagscategory.split(","), ...this.state.AITags],
+        tags: [
+          ...Tagscategory.split(","),
+          ...this.state.AITags,
+          name,
+          category,
+          event,
+          material
+        ],
         images: this.props.images,
         colors: [],
         sizes: [],
